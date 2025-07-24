@@ -31,7 +31,7 @@ func main() {
 
 	srv := &http.Server{
 		Addr:         opts.ListenAddr,
-		Handler:      handler.WriteTo(bw),
+		Handler:      handler.NewLimiter(handler.WriteTo(bw), int64(opts.RateLimit), time.Second),
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
@@ -80,7 +80,7 @@ func parseFlags(args []string) (opts Options) {
 	fs.StringVar(&opts.OutPath, "out", "", "Path to the output file (required)")
 
 	fs.UintVar(&opts.BufferSize, "buffer", 1_000_000, "Size of buffer in bytes")
-	fs.UintVar(&opts.RateLimit, "rate", 100, "Maximum allowed input flow rate in bytes/sec")
+	fs.UintVar(&opts.RateLimit, "rate", 1000, "Maximum allowed input flow rate in bytes/sec")
 
 	fs.DurationVar(&opts.FlushInterval, "interval", 100*time.Millisecond, "Buffer flush interval")
 
