@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"collector/handler"
+	"collector/writer"
 )
 
 func main() {
@@ -25,9 +26,12 @@ func main() {
 
 	defer f.Close()
 
+	bw := writer.New(f, int(opts.BufferSize), opts.FlushInterval)
+	defer bw.Close()
+
 	srv := &http.Server{
 		Addr:         opts.ListenAddr,
-		Handler:      handler.WriteTo(f),
+		Handler:      handler.WriteTo(bw),
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
