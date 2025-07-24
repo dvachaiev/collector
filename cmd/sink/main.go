@@ -77,7 +77,7 @@ func parseFlags(args []string) (opts Options) {
 	fs := flag.NewFlagSet("", flag.ExitOnError)
 
 	fs.StringVar(&opts.ListenAddr, "listen", ":8080", "`address` to listen on")
-	fs.StringVar(&(opts.OutPath), "out", "", "Path to the output file (required)")
+	fs.StringVar(&opts.OutPath, "out", "", "Path to the output file (required)")
 
 	fs.UintVar(&opts.BufferSize, "buffer", 1_000_000, "Size of buffer in bytes")
 	fs.UintVar(&opts.RateLimit, "rate", 100, "Maximum allowed input flow rate in bytes/sec")
