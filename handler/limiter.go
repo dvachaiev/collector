@@ -49,8 +49,8 @@ func (l *Limiter) allow(now time.Time, size int64) bool {
 	l.available = min(l.available+int64(now.Sub(l.last)/l.byteDur), l.maxCount)
 	l.last = now
 
-	if next := l.available - size; next >= 0 {
-		l.available = next
+	if left := l.available - size; left >= 0 {
+		l.available = left
 
 		return true
 	}
