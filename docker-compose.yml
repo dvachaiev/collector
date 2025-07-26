@@ -1,0 +1,17 @@
+services:
+  sink:
+    build:
+      context: .
+      dockerfile: sink.Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./out:/out
+    command: -out /out/data.log
+  node:
+    build:
+      context: .
+      dockerfile: node.Dockerfile
+    depends_on:
+      - sink
+    command: -dst sink:8080
