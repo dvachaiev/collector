@@ -16,9 +16,9 @@ import (
 func main() {
 	opts := parseFlags(os.Args[1:])
 
-	slog.Info("Starting sensor node", "name", opts.Name, "destination", opts.DstAddress)
+	slog.Info("Starting sensor node", "name", opts.Name, "destination", opts.DstURL)
 
-	publ := new(publisher.Publisher)
+	publ := publisher.New(opts.DstURL, int(opts.BufferSize))
 	defer publ.Close()
 
 	proc := processor.New("sensor1", new(sensor.Incremental), int(opts.Rate), publ)
@@ -34,27 +34,33 @@ func main() {
 
 type Options struct {
 	Name       string
-	DstAddress string
+	DstURL     string
 	Rate       uint
+	BufferSize uint
 }
 
 func parseFlags(args []string) (opts Options) {
 	fs := flag.NewFlagSet("", flag.ExitOnError)
 
+	var addr string
+
 	fs.StringVar(&opts.Name, "name", "node", "Name of the sensor")
-	fs.StringVar(&opts.DstAddress, "dst", "", "Destination address where to send data (required)")
+	fs.StringVar(&addr, "dst", "", "Destination address where to send data (required)")
 
 	fs.UintVar(&opts.Rate, "rate", 100, "Number of messages per second to send")
+	fs.UintVar(&opts.BufferSize, "buffer", 100_000, "Buffer size in bytes to cache data")
 
 	if err := fs.Parse(args); err != nil {
 		panic(err) // should never happend
 	}
 
-	if opts.DstAddress == "" {
+	if addr == "" {
 		fmt.Println("Required option `dst` is not specified")
 		fs.Usage()
 		os.Exit(2)
 	}
+
+	opts.DstURL = fmt.Sprintf("http://%v/", addr)
 
 	return opts
 }

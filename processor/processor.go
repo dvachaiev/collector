@@ -1,6 +1,7 @@
 package processor
 
 import (
+	"fmt"
 	"time"
 
 	"collector/message"
@@ -11,7 +12,7 @@ type Sensor interface {
 }
 
 type Publisher interface {
-	Publish(msg message.Message)
+	Publish(msg message.Message) error
 }
 
 type Processor chan struct{}
@@ -34,7 +35,9 @@ func (p Processor) periodicPoll(name string, sensor Sensor, rate int, publisher 
 
 	for {
 		msg := message.New(name, sensor.Value())
-		publisher.Publish(msg)
+		if err := publisher.Publish(msg); err != nil {
+			panic(fmt.Errorf("publish message: %w", err))
+		}
 
 		select {
 		case <-p:
