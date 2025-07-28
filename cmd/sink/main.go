@@ -12,6 +12,7 @@ import (
 	"syscall"
 	"time"
 
+	"collector/converter"
 	"collector/handler"
 	"collector/writer"
 )
@@ -31,7 +32,7 @@ func main() {
 
 	srv := &http.Server{
 		Addr:         opts.ListenAddr,
-		Handler:      handler.NewLimiter(handler.WriteTo(bw), int64(opts.RateLimit), time.Second),
+		Handler:      handler.NewLimiter(handler.WriteTo(bw, converter.Convert), int64(opts.RateLimit), time.Second),
 		ReadTimeout:  30 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
