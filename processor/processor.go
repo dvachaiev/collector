@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"collector/message"
+	"github.com/dvachaiev/collector/message"
 )
 
 type Sensor interface {

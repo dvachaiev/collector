@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"collector/message"
+	"github.com/dvachaiev/collector/message"
 )
 
 func Convert(data []byte) ([]byte, error) {

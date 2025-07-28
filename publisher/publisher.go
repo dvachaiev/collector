@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"collector/message"
+	"github.com/dvachaiev/collector/message"
 )
 
 type Publisher struct {

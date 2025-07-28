@@ -12,9 +12,9 @@ import (
 	"syscall"
 	"time"
 
-	"collector/converter"
-	"collector/handler"
-	"collector/writer"
+	"github.com/dvachaiev/collector/converter"
+	"github.com/dvachaiev/collector/handler"
+	"github.com/dvachaiev/collector/writer"
 )
 
 func main() {

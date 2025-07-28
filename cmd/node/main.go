@@ -8,9 +8,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"collector/processor"
-	"collector/publisher"
-	"collector/sensor"
+	"github.com/dvachaiev/collector/processor"
+	"github.com/dvachaiev/collector/publisher"
+	"github.com/dvachaiev/collector/sensor"
 )
 
 func main() {
